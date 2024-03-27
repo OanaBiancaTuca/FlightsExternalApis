@@ -11,8 +11,12 @@
     <groupId>org.example</groupId>
     <artifactId>operator-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <name>operator-service</name>
     <description>operator-service</description>
+    <modules>
+        <module>Tarom-service</module>
+    </modules>
     <properties>
         <java.version>17</java.version>
     </properties>
