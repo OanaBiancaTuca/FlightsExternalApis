@@ -5,22 +5,28 @@ import org.example.flight.exception.FlightNotFoundException;
 import org.example.flight.mapper.FlightMapper;
 import org.example.flight.model.Flight;
 import org.example.flight.repository.FlightRepository;
+import org.example.flight_details.repository.FlightDetailsRepository;
 import org.example.operator.exception.OperatorNotFoundException;
 import org.example.operator.repository.OperatorRepository;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDate;
+
 @Service
 public class FlightServiceImpl implements FlightService {
     private final FlightRepository flightRepository;
     private final OperatorRepository operatorRepository;
     private final FlightMapper flightMapper;
+    private final FlightDetailsRepository flightDetailsRepository;
 
-    public FlightServiceImpl(FlightRepository flightRepository, OperatorRepository operatorRepository, FlightMapper flightMapper) {
+    public FlightServiceImpl(FlightRepository flightRepository, OperatorRepository operatorRepository,
+                             FlightMapper flightMapper, FlightDetailsRepository flightDetailsRepository) {
         this.flightRepository = flightRepository;
         this.operatorRepository = operatorRepository;
         this.flightMapper = flightMapper;
+        this.flightDetailsRepository = flightDetailsRepository;
     }
 
     @Override
@@ -76,5 +82,13 @@ public class FlightServiceImpl implements FlightService {
                         return Mono.error(new FlightNotFoundException(id));
                     }
                 });
+    }
+
+    @Override
+    public Flux<Flight> getByDepartureDestinationAndDate(String departure, String destination, LocalDate date) {
+        return flightRepository.findByDepartureAndDestination(departure, destination)
+                .flatMap(flight -> flightDetailsRepository.findByFlightIdAndDate(flight.getId(), date)
+                        .map(flightDetails -> flight));
+
     }
 }

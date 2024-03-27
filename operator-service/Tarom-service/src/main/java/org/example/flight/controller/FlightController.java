@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 @RestController
 @RequestMapping("/tarom")
 public class FlightController {
@@ -40,4 +43,12 @@ public class FlightController {
     public Mono<Void> deleteFlight(@PathVariable String id) {
         return flightService.deleteFlight(id);
     }
+
+    @GetMapping("/flight-search")
+    public Flux<Flight> getByDateRangeAndStartAndEndDestination(@RequestParam("departure") String departure,
+                                                                   @RequestParam("destination") String destination,
+                                                                   @RequestParam("date") LocalDate date) {
+        return flightService.getByDepartureDestinationAndDate(departure, destination,date);
+    }
+
 }

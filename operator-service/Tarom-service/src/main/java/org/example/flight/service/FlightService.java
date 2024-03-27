@@ -6,6 +6,8 @@ import org.example.flight.model.Flight;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDate;
+
 public interface FlightService {
 
     Flux<Flight> getAllFlights();
@@ -17,4 +19,6 @@ public interface FlightService {
     Mono<Flight> updateFlight(FlightDto flightDTO);
 
     Mono<Void> deleteFlight(String id);
+
+    Flux<Flight> getByDepartureDestinationAndDate(String departure, String destination, LocalDate date);
 }
