@@ -1,12 +1,13 @@
 package org.example.flight.dto;
 
 import jakarta.validation.constraints.NotNull;
+import org.example.flight_details.dto.FlightDetailsDto;
 
 public class FlightDto {
 
     private String id;
     @NotNull(message = "Id for Operator cannot be null")
-    private String idOperator;
+    private String operatorId;
     @NotNull(message = "Departure cannot be null")
     private String departure;
     @NotNull(message = "Destination cannot be null")
@@ -20,12 +21,12 @@ public class FlightDto {
         this.id = id;
     }
 
-    public String getIdOperator() {
-        return idOperator;
+    public String getOperatorId() {
+        return operatorId;
     }
 
-    public void setIdOperator(String idOperator) {
-        this.idOperator = idOperator;
+    public void setOperatorId(String operatorId) {
+        this.operatorId = operatorId;
     }
 
     public String getDeparture() {

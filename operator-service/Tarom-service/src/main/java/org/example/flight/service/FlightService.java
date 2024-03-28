@@ -2,6 +2,7 @@ package org.example.flight.service;
 
 
 import org.example.flight.dto.FlightDto;
+import org.example.flight.dto.FlightResponseDto;
 import org.example.flight.model.Flight;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -20,5 +21,5 @@ public interface FlightService {
 
     Mono<Void> deleteFlight(String id);
 
-    Flux<Flight> getByDepartureDestinationAndDate(String departure, String destination, LocalDate date);
+    Flux<FlightResponseDto> getByDepartureDestinationAndDate(String departure, String destination, LocalDate date);
 }

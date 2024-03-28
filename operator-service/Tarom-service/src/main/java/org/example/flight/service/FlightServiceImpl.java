@@ -1,10 +1,13 @@
 package org.example.flight.service;
 
 import org.example.flight.dto.FlightDto;
+import org.example.flight.dto.FlightResponseDto;
 import org.example.flight.exception.FlightNotFoundException;
 import org.example.flight.mapper.FlightMapper;
 import org.example.flight.model.Flight;
 import org.example.flight.repository.FlightRepository;
+import org.example.flight_details.dto.FlightDetailsDto;
+import org.example.flight_details.mapper.FlightDetailsMapper;
 import org.example.flight_details.repository.FlightDetailsRepository;
 import org.example.operator.exception.OperatorNotFoundException;
 import org.example.operator.repository.OperatorRepository;
@@ -19,13 +22,15 @@ public class FlightServiceImpl implements FlightService {
     private final FlightRepository flightRepository;
     private final OperatorRepository operatorRepository;
     private final FlightMapper flightMapper;
+    private final FlightDetailsMapper flightDetailsMapper;
     private final FlightDetailsRepository flightDetailsRepository;
 
-    public FlightServiceImpl(FlightRepository flightRepository, OperatorRepository operatorRepository,
-                             FlightMapper flightMapper, FlightDetailsRepository flightDetailsRepository) {
+    public FlightServiceImpl(FlightRepository flightRepository, OperatorRepository operatorRepository, FlightMapper flightMapper,
+                             FlightDetailsMapper flightDetailsMapper, FlightDetailsRepository flightDetailsRepository) {
         this.flightRepository = flightRepository;
         this.operatorRepository = operatorRepository;
         this.flightMapper = flightMapper;
+        this.flightDetailsMapper = flightDetailsMapper;
         this.flightDetailsRepository = flightDetailsRepository;
     }
 
@@ -42,32 +47,32 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public Mono<Flight> createFlight(FlightDto flightDTO) {
-        return operatorRepository.existsById(flightDTO.getIdOperator())
+        return operatorRepository.existsById(flightDTO.getOperatorId())
                 .flatMap(operatorExists -> {
                     if (operatorExists) {
                         Flight flight = flightMapper.dtoToEntity(flightDTO);
                         return flightRepository.save(flight);
                     } else {
-                        return Mono.error(new OperatorNotFoundException(flightDTO.getIdOperator()));
+                        return Mono.error(new OperatorNotFoundException(flightDTO.getOperatorId()));
                     }
                 });
     }
 
     @Override
     public Mono<Flight> updateFlight(FlightDto flightDTO) {
-        return operatorRepository.existsById(flightDTO.getIdOperator())
+        return operatorRepository.existsById(flightDTO.getOperatorId())
                 .flatMap(operatorExists -> {
                     if (operatorExists) {
                         return flightRepository.findById(flightDTO.getId())
                                 .flatMap(existingFlight -> {
                                     existingFlight.setDeparture(flightDTO.getDeparture());
                                     existingFlight.setDestination(flightDTO.getDestination());
-                                    existingFlight.setIdOperator(flightDTO.getIdOperator());
+                                    existingFlight.setOperatorId(flightDTO.getOperatorId());
                                     return flightRepository.save(existingFlight);
                                 })
                                 .switchIfEmpty(Mono.error(new FlightNotFoundException(flightDTO.getId())));
                     } else {
-                        return Mono.error(new OperatorNotFoundException(flightDTO.getIdOperator()));
+                        return Mono.error(new OperatorNotFoundException(flightDTO.getOperatorId()));
                     }
                 });
     }
@@ -85,10 +90,14 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public Flux<Flight> getByDepartureDestinationAndDate(String departure, String destination, LocalDate date) {
+    public Flux<FlightResponseDto> getByDepartureDestinationAndDate(String departure, String destination, LocalDate date) {
         return flightRepository.findByDepartureAndDestination(departure, destination)
                 .flatMap(flight -> flightDetailsRepository.findByFlightIdAndDate(flight.getId(), date)
-                        .map(flightDetails -> flight));
+                        .map(flightDetails -> {
+                            FlightDto flightDto = flightMapper.entityToDto(flight);
+                            FlightDetailsDto flightDetailsDto =flightDetailsMapper.entityToDto(flightDetails);
+                            return new FlightResponseDto(flightDto, flightDetailsDto);
+                        }));
 
     }
 }

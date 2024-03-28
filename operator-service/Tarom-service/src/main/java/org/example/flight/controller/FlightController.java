@@ -1,6 +1,7 @@
 package org.example.flight.controller;
 
 import org.example.flight.dto.FlightDto;
+import org.example.flight.dto.FlightResponseDto;
 import org.example.flight.model.Flight;
 import org.example.flight.service.FlightService;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +12,6 @@ import java.time.LocalDate;
 import java.util.Date;
 
 @RestController
-@RequestMapping("/tarom")
 public class FlightController {
     private final FlightService flightService;
 
@@ -45,9 +45,9 @@ public class FlightController {
     }
 
     @GetMapping("/flight-search")
-    public Flux<Flight> getByDateRangeAndStartAndEndDestination(@RequestParam("departure") String departure,
-                                                                   @RequestParam("destination") String destination,
-                                                                   @RequestParam("date") LocalDate date) {
+    public Flux<FlightResponseDto> getByDateRangeAndStartAndEndDestination(@RequestParam("departure") String departure,
+                                                                           @RequestParam("destination") String destination,
+                                                                           @RequestParam("date") LocalDate date) {
         return flightService.getByDepartureDestinationAndDate(departure, destination,date);
     }
 

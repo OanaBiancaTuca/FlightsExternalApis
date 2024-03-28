@@ -12,7 +12,7 @@ public class FlightMapper {
         }
         Flight entity = new Flight();
 
-        entity.setIdOperator(dto.getIdOperator());
+        entity.setOperatorId(dto.getOperatorId());
         entity.setDeparture(dto.getDeparture());
         entity.setDestination(dto.getDestination());
 
@@ -26,7 +26,7 @@ public class FlightMapper {
         FlightDto dto = new FlightDto();
 
         dto.setId(entity.getId());
-        dto.setIdOperator(entity.getIdOperator());
+        dto.setOperatorId(entity.getOperatorId());
         dto.setDeparture(entity.getDeparture());
         dto.setDestination(entity.getDestination());
 

@@ -8,7 +8,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("/tarom/flight-details")
+@RequestMapping("/flight-details")
 public class FlightDetailsController {
 
     private final FlightDetailsService flightDetailsService;

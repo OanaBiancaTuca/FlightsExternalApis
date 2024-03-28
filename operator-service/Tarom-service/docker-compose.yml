@@ -1,0 +1,48 @@
+version: '3'
+services:
+  tarom_service_8083:
+    image: openjdk:17-jdk-slim
+    container_name: tarom_service
+    networks:
+      admin-service_flightsproject_network:
+    volumes:
+      - ./target/Tarom-service-0.0.1-SNAPSHOT.jar:/app.jar
+    environment:
+      SERVER_PORT: 8083
+      BASE_PATH: /tarom
+      SPRING_DATA_MONGODB_HOST: mongo_db
+      SPRING_DATA_MONGODB_PORT: 27017
+      SPRING_DATA_MONGODB_DATABASE: extern-db
+      SPRING_DATA_MONGODB_USERNAME: user
+      SPRING_DATA_MONGODB_PASSWORD: password
+      SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE: admin
+
+    ports:
+      - "8083:8083"
+    command: java -jar /app.jar --server.port=8083 --spring.webflux.base-path=/tarom
+
+  lufthansa_service_8084:
+    image: openjdk:17-jdk-slim
+    container_name: lufthansa_service
+    networks:
+      admin-service_flightsproject_network:
+    volumes:
+      - ./target/Tarom-service-0.0.1-SNAPSHOT.jar:/app.jar
+    environment:
+      SERVER_PORT: 8084
+      BASE_PATH: /lufthansa
+      SPRING_DATA_MONGODB_HOST: mongo_db
+      SPRING_DATA_MONGODB_PORT: 27017
+      SPRING_DATA_MONGODB_DATABASE: extern-db
+      SPRING_DATA_MONGODB_USERNAME: user
+      SPRING_DATA_MONGODB_PASSWORD: password
+      SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE: admin
+
+    ports:
+      - "8084:8084"
+    command: java -jar /app.jar --server.port=8084 --spring.webflux.base-path=/lufthansa
+networks:
+  admin-service_flightsproject_network:
+    external: true
+volumes:
+  mongo: {}

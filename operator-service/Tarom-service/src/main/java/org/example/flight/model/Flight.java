@@ -8,7 +8,7 @@ public class Flight {
     @Id
     private String id;
 
-    private String idOperator;
+    private String operatorId;
     private String departure;
     private String destination;
 
@@ -20,12 +20,12 @@ public class Flight {
         this.id = id;
     }
 
-    public String getIdOperator() {
-        return idOperator;
+    public String getOperatorId() {
+        return operatorId;
     }
 
-    public void setIdOperator(String idOperator) {
-        this.idOperator = idOperator;
+    public void setOperatorId(String operatorId) {
+        this.operatorId = operatorId;
     }
 
     public String getDeparture() {
