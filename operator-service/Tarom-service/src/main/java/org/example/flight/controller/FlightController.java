@@ -5,11 +5,12 @@ import org.example.flight.dto.FlightResponseDto;
 import org.example.flight.model.Flight;
 import org.example.flight.service.FlightService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
-import java.util.Date;
+
 
 @RestController
 public class FlightController {
@@ -24,7 +25,7 @@ public class FlightController {
         return flightService.getAllFlights();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/search-by-id/{id}")
     public Mono<Flight> getFlightById(@PathVariable String id) {
         return flightService.getFlightById(id);
     }
@@ -45,10 +46,24 @@ public class FlightController {
     }
 
     @GetMapping("/flight-search")
-    public Flux<FlightResponseDto> getByDateRangeAndStartAndEndDestination(@RequestParam("departure") String departure,
+    public Flux<FlightResponseDto> getByDateRangeAndStartAndEndDestination(ServerWebExchange exchange,
+                                                                           @RequestParam("departure") String departure,
                                                                            @RequestParam("destination") String destination,
                                                                            @RequestParam("date") LocalDate date) {
-        return flightService.getByDepartureDestinationAndDate(departure, destination,date);
+        String operatorName = extractOperatorNameFromBasePath(exchange);
+        return flightService.getByDepartureDestinationAndDate(operatorName, departure, destination, date);
     }
 
+    private String extractOperatorNameFromBasePath(ServerWebExchange exchange) {
+        String basePath = exchange.getRequest().getPath().contextPath().value();
+        // Extrage numele operatorului din calea de bază
+        // Exemplu: /tarom/flight-search -> "tarom"
+        String[] parts = basePath.split("/");
+        if (parts.length >= 2) {
+            return parts[1]; // Operatorul este primul element din calea de bază
+        } else {
+            throw new IllegalArgumentException("Operator not found in base path");
+        }
+
+    }
 }

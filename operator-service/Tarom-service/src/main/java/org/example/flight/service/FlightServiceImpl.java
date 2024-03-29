@@ -53,7 +53,7 @@ public class FlightServiceImpl implements FlightService {
     public Mono<Flight> createFlight(FlightDto flightDTO) {
         return operatorRepository.existsById(flightDTO.getOperatorId())
                 .flatMap(operatorExists -> {
-                    if (operatorExists) {
+                    if (operatorExists != null) {
                         Flight flight = flightMapper.dtoToEntity(flightDTO);
                         return flightRepository.save(flight);
                     } else {
@@ -66,7 +66,7 @@ public class FlightServiceImpl implements FlightService {
     public Mono<Flight> updateFlight(FlightDto flightDTO) {
         return operatorRepository.existsById(flightDTO.getOperatorId())
                 .flatMap(operatorExists -> {
-                    if (operatorExists) {
+                    if (operatorExists != null) {
                         return flightRepository.findById(flightDTO.getId())
                                 .flatMap(existingFlight -> {
                                     existingFlight.setDeparture(flightDTO.getDeparture());
@@ -85,7 +85,7 @@ public class FlightServiceImpl implements FlightService {
     public Mono<Void> deleteFlight(String id) {
         return flightRepository.existsById(id)
                 .flatMap(flightExists -> {
-                    if (flightExists) {
+                    if (flightExists != null) {
                         return flightRepository.deleteById(id);
                     } else {
                         return Mono.error(new FlightNotFoundException(id));
@@ -94,13 +94,14 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public Flux<FlightResponseDto> getByDepartureDestinationAndDate(String departure, String destination, LocalDate date) {
+    public Flux<FlightResponseDto> getByDepartureDestinationAndDate(String operatorName, String departure, String destination, LocalDate date) {
         return flightRepository.findByDepartureAndDestination(departure, destination)
                 .flatMap(flight ->
                         flightDetailsRepository.findByFlightIdAndDate(flight.getId(), date)
                                 .flatMap(flightDetails ->
                                         operatorRepository.findById(flight.getOperatorId())
-                                                .map(operator -> {
+                                                .mapNotNull(operator -> {
+                                                    if (!operatorName.equalsIgnoreCase(operator.getName())) return null;
                                                     FlightDto flightDto = flightMapper.entityToDto(flight);
                                                     FlightDetailsDto flightDetailsDto = flightDetailsMapper.entityToDto(flightDetails);
                                                     OperatorDto operatorDto = operatorMapper.entityToDto(operator);

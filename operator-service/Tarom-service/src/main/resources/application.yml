@@ -9,3 +9,5 @@ spring:
       port: 27017
       database: extern-db
       authentication-database: admin
+  webflux:
+    base-path: tarom

@@ -77,10 +77,6 @@ Q.idea/sonarlint/securityhotspotstore/8/e/8e11c9657bf9bb477222ebd6f70a8fc2a8ca87
 Q.idea/sonarlint/securityhotspotstore/0/e/0edad58d685e537b0436e66f86d2675ea677a747,4\2\4251dc05bd1a0a2d02bb04c30373f2b06300fe65
 Å
 Q.idea/sonarlint/securityhotspotstore/f/e/fe172f0a5cd69d55dd65791ad97d74e7a3666ed5,f\4\f4a7562ea98af8d984015ec050e2b11b500a4a0d
-w
-G.idea/sonarlint/issuestore/6/2/62a59910db7c2e11c891331237bb0f1d690f6b27,d\8\d8929503f966eafe97248833c2227d7aadb35090
-Å
-Q.idea/sonarlint/securityhotspotstore/6/2/62a59910db7c2e11c891331237bb0f1d690f6b27,f\6\f61a5059e3c40e040c1769d4e2ad85451071bdb8
 Å
 Q.idea/sonarlint/securityhotspotstore/d/a/da28425f3671fb7cdbcdd61289551dc36f3b7411,f\e\fe1922ccf1569a6e964b6fbffb0083eabffecfc1
 w
@@ -107,8 +103,6 @@ w
 G.idea/sonarlint/issuestore/4/f/4fd131735d5801a8278cf1d4742104999a5c3126,e\f\efc947cffb31231b6e72ecd9301ae0d628f0cf37
 Å
 Q.idea/sonarlint/securityhotspotstore/9/3/93a9909fbcfd57db3cb43c8ede861896630f6a60,7\c\7c532c725a4e64b48725288436edfc6b4b06b8be
-Å
-Q.idea/sonarlint/securityhotspotstore/4/4/442b87838e18cb5a01e253add29317a30fe31293,1\f\1fb2febd52a379656ae5ef414d528e31e1ed0fe7
 Å
 Q.idea/sonarlint/securityhotspotstore/b/7/b72ab8c4e161e904e66007d81d1acfcfed239ea7,3\9\39ccd90e7cdd3311be3719bd4c995914a72bfe56
 Å
@@ -153,8 +147,6 @@ w
 G.idea/sonarlint/issuestore/3/9/39832e5aa2136dabbaaf1ceaf7a28a8df46871c6,1\c\1cafece54ffd312ddc6a8e40638688875b634c47
 Å
 Q.idea/sonarlint/securityhotspotstore/7/3/732e53fe855a7638098bda953ef422c3ef351ed7,7\b\7bc475b73c4c66cc446e26661a641fbe37d598f4
-Å
-Q.idea/sonarlint/securityhotspotstore/d/4/d40d154a05bda9e22dd1331bc51bd3b6b1d6792c,3\1\310b06924d06709147e5f02c92b069dff712480d
 w
 G.idea/sonarlint/issuestore/8/e/8e11c9657bf9bb477222ebd6f70a8fc2a8ca872a,e\1\e100ee631b2b4bd615cca28419133011f1426962
 w
@@ -171,8 +163,6 @@ Q.idea/sonarlint/securityhotspotstore/6/f/6f99f37c06f7f5affba9f81e62d3f78afdeade
 Q.idea/sonarlint/securityhotspotstore/e/2/e243b435b53c2351e2c756d12a4ec747a7b50175,b\e\be5a16862549f15572df9343cc4d9568c1c6f97f
 w
 G.idea/sonarlint/issuestore/6/f/6f99f37c06f7f5affba9f81e62d3f78afdeade33,b\b\bb391393281ebd4de1f715c02105688ee83daabc
-]
--operator-service/Tarom-service/docker-compose,f\d\fdfcb9a541165252b874537c7a644a3e08870aa3
 a
 1operator-service/Tarom-service/docker-compose.yml,4\0\40b735813f05f747de59a74bcb83f1b2c98ba50e
 ä
