@@ -49,9 +49,10 @@ public class FlightController {
     public Flux<FlightResponseDto> getByDateRangeAndStartAndEndDestination(ServerWebExchange exchange,
                                                                            @RequestParam("departure") String departure,
                                                                            @RequestParam("destination") String destination,
-                                                                           @RequestParam("date") LocalDate date) {
+                                                                           @RequestParam("dateFrom") String dateFrom,
+                                                                           @RequestParam("dateTo") String dateTo) {
         String operatorName = extractOperatorNameFromBasePath(exchange);
-        return flightService.getByDepartureDestinationAndDate(operatorName, departure, destination, date);
+        return flightService.getByDepartureDestinationAndDate(operatorName, departure, destination, dateFrom, dateTo);
     }
 
     private String extractOperatorNameFromBasePath(ServerWebExchange exchange) {
