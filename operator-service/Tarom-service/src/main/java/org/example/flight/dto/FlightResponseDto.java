@@ -1,25 +1,21 @@
 package org.example.flight.dto;
 
-import org.example.flight_details.dto.FlightDetailsDto;
 import org.example.operator.dto.OperatorDto;
 
 public class FlightResponseDto {
     private FlightDto flightDto;
-    private FlightDetailsDto flightDetailsDto;
     private OperatorDto operatorDto;
 
     public FlightResponseDto() {
 
     }
 
-    public FlightResponseDto(FlightDto flightDto, FlightDetailsDto flightDetailsDto) {
+    public FlightResponseDto(FlightDto flightDto) {
         this.flightDto = flightDto;
-        this.flightDetailsDto = flightDetailsDto;
     }
 
-    public FlightResponseDto(FlightDto flightDto, FlightDetailsDto flightDetailsDto, OperatorDto operatorDto) {
+    public FlightResponseDto(FlightDto flightDto, OperatorDto operatorDto) {
         this.flightDto = flightDto;
-        this.flightDetailsDto = flightDetailsDto;
         this.operatorDto = operatorDto;
     }
 
@@ -31,13 +27,7 @@ public class FlightResponseDto {
         this.flightDto = flightDto;
     }
 
-    public FlightDetailsDto getFlightDetailsDto() {
-        return flightDetailsDto;
-    }
 
-    public void setFlightDetailsDto(FlightDetailsDto flightDetailsDto) {
-        this.flightDetailsDto = flightDetailsDto;
-    }
 
     public OperatorDto getOperatorDto() {
         return operatorDto;
@@ -51,10 +41,10 @@ public class FlightResponseDto {
     public String toString() {
         return "flight: " + flightDto.getDeparture() + ","
                 + flightDto.getDestination() +
-                ", details: " + flightDetailsDto.getDate() +
-                ", " + flightDetailsDto.getDepartureTime() + ", " +
-                flightDetailsDto.getArrivalTime() + ", " +
-                flightDetailsDto.getStandardPrice() +
+                ", details: " + flightDto.getDate() +
+                ", " + flightDto.getDepartureTime() + ", " +
+                flightDto.getArrivalTime() + ", " +
+                flightDto.getStandardPrice() +
                 " and operator: " + operatorDto.getName();
     }
 }

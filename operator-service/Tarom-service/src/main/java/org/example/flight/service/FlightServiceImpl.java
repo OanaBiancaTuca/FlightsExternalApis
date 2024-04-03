@@ -6,9 +6,6 @@ import org.example.flight.exception.FlightNotFoundException;
 import org.example.flight.mapper.FlightMapper;
 import org.example.flight.model.Flight;
 import org.example.flight.repository.FlightRepository;
-import org.example.flight_details.dto.FlightDetailsDto;
-import org.example.flight_details.mapper.FlightDetailsMapper;
-import org.example.flight_details.repository.FlightDetailsRepository;
 import org.example.operator.dto.OperatorDto;
 import org.example.operator.exception.OperatorNotFoundException;
 import org.example.operator.mapper.OperatorMapper;
@@ -24,17 +21,15 @@ public class FlightServiceImpl implements FlightService {
     private final FlightRepository flightRepository;
     private final OperatorRepository operatorRepository;
     private final FlightMapper flightMapper;
-    private final FlightDetailsMapper flightDetailsMapper;
-    private final FlightDetailsRepository flightDetailsRepository;
     private final OperatorMapper operatorMapper;
 
-    public FlightServiceImpl(FlightRepository flightRepository, OperatorRepository operatorRepository, FlightMapper flightMapper,
-                             FlightDetailsMapper flightDetailsMapper, FlightDetailsRepository flightDetailsRepository, OperatorMapper operatorMapper) {
+    public FlightServiceImpl(FlightRepository flightRepository,
+                             OperatorRepository operatorRepository,
+                             FlightMapper flightMapper,
+                             OperatorMapper operatorMapper) {
         this.flightRepository = flightRepository;
         this.operatorRepository = operatorRepository;
         this.flightMapper = flightMapper;
-        this.flightDetailsMapper = flightDetailsMapper;
-        this.flightDetailsRepository = flightDetailsRepository;
         this.operatorMapper = operatorMapper;
     }
 
@@ -95,19 +90,14 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public Flux<FlightResponseDto> getByDepartureDestinationAndDate(String operatorName, String departure, String destination, LocalDate date) {
-        return flightRepository.findByDepartureAndDestination(departure, destination)
-                .flatMap(flight ->
-                        flightDetailsRepository.findByFlightIdAndDate(flight.getId(), date)
-                                .flatMap(flightDetails ->
-                                        operatorRepository.findById(flight.getOperatorId())
+        return flightRepository.findByDepartureAndDestinationAndDate(departure, destination, date)
+                .flatMap(flight -> operatorRepository.findById(flight.getOperatorId())
                                                 .mapNotNull(operator -> {
                                                     if (!operatorName.equalsIgnoreCase(operator.getName())) return null;
                                                     FlightDto flightDto = flightMapper.entityToDto(flight);
-                                                    FlightDetailsDto flightDetailsDto = flightDetailsMapper.entityToDto(flightDetails);
                                                     OperatorDto operatorDto = operatorMapper.entityToDto(operator);
-                                                    return new FlightResponseDto(flightDto, flightDetailsDto, operatorDto);
+                                                    return new FlightResponseDto(flightDto, operatorDto);
                                                 })
-                                )
                 );
     }
 }
