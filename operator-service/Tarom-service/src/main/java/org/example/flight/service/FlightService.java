@@ -21,5 +21,7 @@ public interface FlightService {
 
     Mono<Void> deleteFlight(String id);
 
-    Flux<FlightResponseDto> getByDepartureDestinationAndDate(String operatorName,String departure, String destination, LocalDate date);
+    Flux<FlightResponseDto> getByDepartureDestinationAndDate(String operatorName, String departure,
+                                                             String destination, String dateFrom,
+                                                             String dateTo);
 }

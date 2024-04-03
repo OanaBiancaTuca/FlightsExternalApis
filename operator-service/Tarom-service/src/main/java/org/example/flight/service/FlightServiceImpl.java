@@ -10,6 +10,9 @@ import org.example.operator.dto.OperatorDto;
 import org.example.operator.exception.OperatorNotFoundException;
 import org.example.operator.mapper.OperatorMapper;
 import org.example.operator.repository.OperatorRepository;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -22,15 +25,18 @@ public class FlightServiceImpl implements FlightService {
     private final OperatorRepository operatorRepository;
     private final FlightMapper flightMapper;
     private final OperatorMapper operatorMapper;
+    private final MongoTemplate mongoTemplate;
 
     public FlightServiceImpl(FlightRepository flightRepository,
                              OperatorRepository operatorRepository,
                              FlightMapper flightMapper,
-                             OperatorMapper operatorMapper) {
+                             OperatorMapper operatorMapper,
+                             MongoTemplate mongoTemplate) {
         this.flightRepository = flightRepository;
         this.operatorRepository = operatorRepository;
         this.flightMapper = flightMapper;
         this.operatorMapper = operatorMapper;
+        this.mongoTemplate = mongoTemplate;
     }
 
     @Override
@@ -89,15 +95,31 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public Flux<FlightResponseDto> getByDepartureDestinationAndDate(String operatorName, String departure, String destination, LocalDate date) {
-        return flightRepository.findByDepartureAndDestinationAndDate(departure, destination, date)
+    public Flux<FlightResponseDto> getByDepartureDestinationAndDate(String operatorName,
+                                                                    String departure,
+                                                                    String destination,
+                                                                    String dateFrom,
+                                                                    String dateTo) {
+        Query query = new Query();
+        if (!departure.isEmpty()) {
+            query.addCriteria(Criteria.where("departure").is(departure));
+        }
+        if (!destination.isEmpty()) {
+            query.addCriteria(Criteria.where("destination").is(destination));
+        }
+        if (!dateFrom.isEmpty() && !dateTo.isEmpty()) {
+            query.addCriteria(Criteria.where("date").gte(LocalDate.parse(dateFrom)).lte(LocalDate.parse(dateTo)));
+        }
+        query.addCriteria(Criteria.where("numberOfSeats").gt(0));
+
+        return Flux.fromIterable(mongoTemplate.find(query, Flight.class))
                 .flatMap(flight -> operatorRepository.findById(flight.getOperatorId())
-                                                .mapNotNull(operator -> {
-                                                    if (!operatorName.equalsIgnoreCase(operator.getName())) return null;
-                                                    FlightDto flightDto = flightMapper.entityToDto(flight);
-                                                    OperatorDto operatorDto = operatorMapper.entityToDto(operator);
-                                                    return new FlightResponseDto(flightDto, operatorDto);
-                                                })
+                        .filter(operator -> operatorName.equalsIgnoreCase(operator.getName()))
+                        .map(operator -> {
+                            FlightDto flightDto = flightMapper.entityToDto(flight);
+                            OperatorDto operatorDto = operatorMapper.entityToDto(operator);
+                            return new FlightResponseDto(flightDto, operatorDto);
+                        })
                 );
     }
 }
