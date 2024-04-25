@@ -1,14 +1,14 @@
 version: '3'
 services:
-  tarom_service_8083:
+  tarom_service_8085:
     image: openjdk:17-jdk-slim
     container_name: tarom_service
     networks:
-      admin-service_flightsproject_network:
+      - project_network
     volumes:
       - ./target/Tarom-service-0.0.1-SNAPSHOT.jar:/app.jar
     environment:
-      SERVER_PORT: 8083
+      SERVER_PORT: 8085
       BASE_PATH: /tarom
       SPRING_DATA_MONGODB_HOST: mongo_db
       SPRING_DATA_MONGODB_PORT: 27017
@@ -18,14 +18,14 @@ services:
       SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE: admin
 
     ports:
-      - "8083:8083"
-    command: java -jar /app.jar --server.port=8083 --spring.webflux.base-path=/tarom
+      - "8085:8085"
+    command: java -jar /app.jar --server.port=8085 --spring.webflux.base-path=/tarom
 
   lufthansa_service_8084:
     image: openjdk:17-jdk-slim
     container_name: lufthansa_service
     networks:
-      admin-service_flightsproject_network:
+      - project_network
     volumes:
       - ./target/Tarom-service-0.0.1-SNAPSHOT.jar:/app.jar
     environment:
@@ -41,8 +41,135 @@ services:
     ports:
       - "8084:8084"
     command: java -jar /app.jar --server.port=8084 --spring.webflux.base-path=/lufthansa
+
+#  ryanair_service_8085:
+#    image: openjdk:17-jdk-slim
+#    container_name: ryanair_service
+#    networks:
+#      - project_network
+#    volumes:
+#      - ./target/Tarom-service-0.0.1-SNAPSHOT.jar:/app.jar
+#    environment:
+#      SERVER_PORT: 8085
+#      BASE_PATH: /ryanair
+#      SPRING_DATA_MONGODB_HOST: mongo_db
+#      SPRING_DATA_MONGODB_PORT: 27017
+#      SPRING_DATA_MONGODB_DATABASE: extern-db
+#      SPRING_DATA_MONGODB_USERNAME: user
+#      SPRING_DATA_MONGODB_PASSWORD: password
+#      SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE: admin
+#
+#    ports:
+#      - "8085:8085"
+#    command: java -jar /app.jar --server.port=8085 --spring.webflux.base-path=/ryanair
+#
+#  wizz_service_8086:
+#    image: openjdk:17-jdk-slim
+#    container_name: wizz_service
+#    networks:
+#      - project_network
+#    volumes:
+#      - ./target/Tarom-service-0.0.1-SNAPSHOT.jar:/app.jar
+#    environment:
+#      SERVER_PORT: 8086
+#      BASE_PATH: /wizz
+#      SPRING_DATA_MONGODB_HOST: mongo_db
+#      SPRING_DATA_MONGODB_PORT: 27017
+#      SPRING_DATA_MONGODB_DATABASE: extern-db
+#      SPRING_DATA_MONGODB_USERNAME: user
+#      SPRING_DATA_MONGODB_PASSWORD: password
+#      SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE: admin
+#
+#    ports:
+#      - "8086:8086"
+#    command: java -jar /app.jar --server.port=8086 --spring.webflux.base-path=/wizz
+#
+#  turkish_service_8087:
+#    image: openjdk:17-jdk-slim
+#    container_name: turkish_service
+#    networks:
+#      - project_network
+#    volumes:
+#      - ./target/Tarom-service-0.0.1-SNAPSHOT.jar:/app.jar
+#    environment:
+#      SERVER_PORT: 8087
+#      BASE_PATH: /turkish
+#      SPRING_DATA_MONGODB_HOST: mongo_db
+#      SPRING_DATA_MONGODB_PORT: 27017
+#      SPRING_DATA_MONGODB_DATABASE: extern-db
+#      SPRING_DATA_MONGODB_USERNAME: user
+#      SPRING_DATA_MONGODB_PASSWORD: password
+#      SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE: admin
+#
+#    ports:
+#      - "8087:8087"
+#    command: java -jar /app.jar --server.port=8087 --spring.webflux.base-path=/turkish
+#
+#  austrian_service_8088:
+#    image: openjdk:17-jdk-slim
+#    container_name: austrian_service
+#    networks:
+#      - project_network
+#    volumes:
+#      - ./target/Tarom-service-0.0.1-SNAPSHOT.jar:/app.jar
+#    environment:
+#      SERVER_PORT: 8088
+#      BASE_PATH: /austrian
+#      SPRING_DATA_MONGODB_HOST: mongo_db
+#      SPRING_DATA_MONGODB_PORT: 27017
+#      SPRING_DATA_MONGODB_DATABASE: extern-db
+#      SPRING_DATA_MONGODB_USERNAME: user
+#      SPRING_DATA_MONGODB_PASSWORD: password
+#      SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE: admin
+#
+#    ports:
+#      - "8088:8088"
+#    command: java -jar /app.jar --server.port=8088 --spring.webflux.base-path=/austrian
+#
+#  jetblue_service_8089:
+#    image: openjdk:17-jdk-slim
+#    container_name: jetblue_service
+#    networks:
+#      - project_network
+#    volumes:
+#      - ./target/Tarom-service-0.0.1-SNAPSHOT.jar:/app.jar
+#    environment:
+#      SERVER_PORT: 8089
+#      BASE_PATH: /jetblue
+#      SPRING_DATA_MONGODB_HOST: mongo_db
+#      SPRING_DATA_MONGODB_PORT: 27017
+#      SPRING_DATA_MONGODB_DATABASE: extern-db
+#      SPRING_DATA_MONGODB_USERNAME: user
+#      SPRING_DATA_MONGODB_PASSWORD: password
+#      SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE: admin
+#
+#    ports:
+#      - "8089:8089"
+#    command: java -jar /app.jar --server.port=8089 --spring.webflux.base-path=/jetblue
+#
+#  jetblue_service_8090:
+#    image: openjdk:17-jdk-slim
+#    container_name: pacific_service
+#    networks:
+#      - project_network
+#    volumes:
+#      - ./target/Tarom-service-0.0.1-SNAPSHOT.jar:/app.jar
+#    environment:
+#      SERVER_PORT: 8090
+#      BASE_PATH: /pacific
+#      SPRING_DATA_MONGODB_HOST: mongo_db
+#      SPRING_DATA_MONGODB_PORT: 27017
+#      SPRING_DATA_MONGODB_DATABASE: extern-db
+#      SPRING_DATA_MONGODB_USERNAME: user
+#      SPRING_DATA_MONGODB_PASSWORD: password
+#      SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE: admin
+#
+#    ports:
+#      - "8090:8090"
+#    command: java -jar /app.jar --server.port=8090 --spring.webflux.base-path=/pacific
+
 networks:
-  admin-service_flightsproject_network:
+  project_network:
     external: true
 volumes:
   mongo: {}
