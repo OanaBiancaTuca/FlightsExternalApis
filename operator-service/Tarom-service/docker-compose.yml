@@ -1,6 +1,6 @@
 version: '3'
 services:
-  tarom_service_8085:
+  tarom_service_8020:
     image: openjdk:17-jdk-slim
     container_name: tarom_service
     networks:
@@ -8,7 +8,7 @@ services:
     volumes:
       - ./target/Tarom-service-0.0.1-SNAPSHOT.jar:/app.jar
     environment:
-      SERVER_PORT: 8085
+      SERVER_PORT: 8020
       BASE_PATH: /tarom
       SPRING_DATA_MONGODB_HOST: mongo_db
       SPRING_DATA_MONGODB_PORT: 27017
@@ -16,10 +16,9 @@ services:
       SPRING_DATA_MONGODB_USERNAME: user
       SPRING_DATA_MONGODB_PASSWORD: password
       SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE: admin
-
     ports:
-      - "8085:8085"
-    command: java -jar /app.jar --server.port=8085 --spring.webflux.base-path=/tarom
+      - "8020:8020"
+    command: java -jar /app.jar --server.port=8020 --spring.webflux.base-path=/tarom
 
   lufthansa_service_8084:
     image: openjdk:17-jdk-slim
@@ -37,7 +36,6 @@ services:
       SPRING_DATA_MONGODB_USERNAME: user
       SPRING_DATA_MONGODB_PASSWORD: password
       SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE: admin
-
     ports:
       - "8084:8084"
     command: java -jar /app.jar --server.port=8084 --spring.webflux.base-path=/lufthansa
@@ -170,6 +168,5 @@ services:
 
 networks:
   project_network:
-    external: true
 volumes:
   mongo: {}
