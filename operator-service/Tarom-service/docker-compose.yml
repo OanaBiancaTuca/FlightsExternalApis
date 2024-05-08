@@ -168,5 +168,6 @@ services:
 
 networks:
   project_network:
+    external: true
 volumes:
   mongo: {}
